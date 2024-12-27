@@ -1,0 +1,55 @@
+iss mein hum btayenge ki hum bnane kya wale hai 
+
+we are creating a Voting application
+
+features- 
+1. toh hum kisi v candidate ko vote  de skte hai
+   => Models? //Schema kya kitna hoga
+   => Routes? //Routes kya kya hoga
+2. Eigible creteriar ko samjhenge(agr wo 18> toh vote de skte hai)
+3. sara data database mein store hoga
+4. phir hum database mein check krenge ki kis candidate ko jyada vote milla
+
+functionality->
+1. user singup/login
+2. see list of candidate
+3. ek banda ek baar mein 1 hee vote dega uske baad wo vote nahi de skta
+4. there is a route which show the list of candidate and ther vote counts srted by their vote  counts
+6. ek admin hoga jo sirf table ko maintain krega or wo vote nahi de skta hai
+7. user can change(forget) their password
+8. user can only login with adhar card number and password
+
+-------------------------------------------------------------------
+
+Routes (Means humare pass kitne routes honge)
+
+User Authentication:
+     /singup: POST - creating a new user account;
+     /login : POST - all to acces routes by inserting login details (adhar card number-password);
+
+Voting:
+     /candidate: GET - Get(show) the list of candidate
+     /vote/:candidateID: POST - Vote for specfic candidate
+
+Votes counts:
+     /vote/counts: GET - Get the list of candidate sorted by their vote counts
+
+User Profile:
+     /profile: GET - Get the user profile info
+     /profile/password: PUT - allow user to change there password
+
+Admin candidate Management:
+     /candidate: POST - create a new candidate.
+     /candidate/candidateId: PUT - update an existing candidate.
+     /candidate/candidateId: delete - Delete a candidate from a list.
+
+Only one admin in the database that manage all the records and data
+
+//Abhi tak kya bna hai
+1.user - register and login done
+2.candidates- admin(insert,delete,update),user(view) done
+3.voting- admin not allow to vote,only voter can give vote
+4.Upgradation- candidate votecount upgrade,user isVoted is true after voted to a candidates
+
+//Abb kya krna baaki hai
+voter- sirf ek baar vote deskta hai kissi ek hee candidates ko
