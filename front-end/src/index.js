@@ -4,14 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import RoleProvider from './Component/CandidatesUi/RoleContext';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<React.StrictMode>
+<Auth0Provider
+    domain="dev-mi16626ktkvxzetf.us.auth0.com"
+    clientId="lpWFB69SiYeT7R6AJGSeJwxex6rTiBdA"
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+  >
   <RoleProvider>
      <App />
   </RoleProvider>
-</React.StrictMode>
+</Auth0Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

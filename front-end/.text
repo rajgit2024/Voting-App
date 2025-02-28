@@ -17,5 +17,8 @@ const DropdownExample = () => {
       <p>You selected: {selectedOption}</p>
     </div>
 
+      
+
 => agar aapke pass useState ho toh onChange method h wo update krta hai aap data ko or setSelectedOption wapas value ko variable mein dalta hai 
 => agar phele se hee value selectedOption mein hai or app input kiye new form mein or aapne onChange funtion ko toh onChange funtion aapke selectedOption ko update kr dega
+

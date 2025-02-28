@@ -119,7 +119,16 @@ const Login = () => {
         >
           {isLoading ? "Logging in..." : "Login"}
         </button>
-      </form>
+        <div className="flex justify-between">
+        <h2 className="flex gap-1">
+          <h3 className="font-[70px]">Don't have account?</h3>
+          <a className="text-blue-800" href="/register">Click here</a>
+        </h2>
+        <h2 className="font-[50px] text-blue-800">
+          <a href="/profile/password">Forgot password?</a>
+        </h2>
+        </div>
+        </form>
     </div>
   );
 };

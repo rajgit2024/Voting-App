@@ -1,52 +1,95 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IoPerson } from "react-icons/io5";
+import { IoPerson, IoAddCircle } from "react-icons/io5";
 import { TbArrowBackUp } from "react-icons/tb";
 import axios from "axios";
 import { RoleContext } from "./CandidatesUi/RoleContext";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-  const [user,setUser]=useState(null);
-  const [loading,setLoading]=useState(true);
-  const {logout}=useContext(RoleContext)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Initialize loading as true
+  const [selectedImage, setSelectedImage] = useState(null);
+  const { logout } = useContext(RoleContext);
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    featchDetail();
-  },[]);
-  //Featch detail form backend
-  const featchDetail=async()=>{
-   const token=localStorage.getItem("token");
-   if(token){
-    try {
-      const response=await axios.get("http://localhost:5000/api/user/profile",{
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
-       })
-       setUser(response.data);
-       setLoading(false);
-    } catch (error) {
-      console.error("Error while sending response",error);
-      setLoading(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchDetail(); // Fetch user details if token exists
+    } else {
+      setLoading(false); // No token, stop loading
+      navigate("/landing"); // Redirect to landing page
     }
-   } else{
-    setLoading(false);
-   }
-   
-  }
+  }, []);
   
-  if(!user){
-    return <div>Please log in to view your profile.</div>
+  // Fetch user details from the backend
+  const fetchDetail = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await axios.get("http://localhost:5000/api/user/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error while fetching profile:", error);
+        localStorage.removeItem("token"); // Clear token if invalid
+        navigate("/");
+      } finally {
+        setLoading(false); // Stop loading after fetch attempt
+      }
+    } else {
+      setLoading(false); // No token, stop loading
+      navigate("/");
+    }
+  };
+
+  // Handle Image Selection
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
+  // Handle Image Upload
+  const handleImageUpload = async () => {
+    if (!selectedImage) {
+      alert("Please select an image first");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("profileImage", selectedImage);
+
+    try {
+      await axios.post("http://localhost:5000/api/user/upload-profile-image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      alert("Profile image uploaded successfully!");
+      setSelectedImage(null);
+      fetchDetail(); // Refresh user details
+    } catch (error) {
+      console.error("Error while uploading image:", error);
+      alert("Failed to upload image");
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading spinner
   }
-  
-  if(loading){
-    return <div>loading...</div>
+
+  if (!user) {
+    return <div>Please log in to view your profile.</div>;
   }
 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center pt-2">
-      {/* Yellow Background Section */}
       <div className="bg-[#fffcc9] shadow-lg rounded-lg w-[90%] max-w-4xl">
-
         {/* Header */}
         <div className="w-full bg-gradient-to-r from-blue-300 to-blue-800 flex items-center justify-between px-4 h-12 rounded-t-xl">
           <IoPerson className="text-[25px] text-white" />
@@ -58,11 +101,25 @@ const UserProfile = () => {
         <div className="mt-6 flex flex-col items-center">
           <div className="relative">
             <img
-              src="https://via.placeholder.com/150"
+              src={
+                user.profile_image
+                  ? `http://localhost:5000/uploads/profile_images/${user.profile_image}?t=${new Date().getTime()}`
+                  : "https://via.placeholder.com/150"
+              }
               alt="Profile"
               className="rounded-full border-4 border-blue-500 w-48 h-48"
             />
-            <div className="absolute bottom-2 right-5 w-6 h-6 bg-green-700 border-2 border-white rounded-full"></div>
+            <IoAddCircle
+              className="absolute bottom-0 right-0 text-blue-500 text-4xl cursor-pointer hover:text-blue-700"
+              onClick={() => document.getElementById("imageInput").click()}
+            />
+            <input
+              id="imageInput"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
           </div>
 
           <div className="text-center mt-4">
@@ -74,89 +131,58 @@ const UserProfile = () => {
         {/* User Details */}
         <div className="mt-6 px-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-            Your Detail's
+            Your Details
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Name */}
-        <div className="flex justify-between items-center gap-2">
-        <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-          <p className="p-2 font-medium w-1/3">Name</p>
+            <div>
+              <p className="font-medium">Name:</p>
+              <p className="text-gray-800">{user.name}</p>
+            </div>
+            <div>
+              <p className="font-medium">Age:</p>
+              <p className="text-gray-800">{user.age}</p>
+            </div>
+            <div>
+              <p className="font-medium">Email:</p>
+              <p className="text-gray-800">{user.email}</p>
+            </div>
+            <div>
+              <p className="font-medium">Phone:</p>
+              <p className="text-gray-800">{user.mobile}</p>
+            </div>
+            <div>
+              <p className="font-medium">Address:</p>
+              <p className="text-gray-800">{user.address}</p>
+            </div>
+            <div>
+              <p className="font-medium">Aadhar Number:</p>
+              <p className="text-gray-800">{user.adharcardnumber}</p>
+            </div>
           </div>
-          <div className="w-2/3 ">
-          <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-          {user.name}
-          </p>
         </div>
-       </div>
 
-    {/* Age */}
-    <div className="flex justify-between items-center gap-2">
-    <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-      <p className="p-2 font-medium w-1/3">Age</p>
-      </div>
-      <div className="w-2/3">
-      <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-          {user.age}
-        </p>
-      </div>
-    </div>
-
-    {/* Email */}
-    <div className="flex justify-between items-center gap-2">
-    <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-      <p className="p-2 font-medium w-1/3">Email</p>
-      </div>
-      <div className="w-2/3">
-      <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-          {user.email}
-        </p>
-      </div>
-    </div>
-
-    {/* Phone */}
-    <div className="flex justify-between items-center gap-2">
-    <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-      <p className="p-2 font-medium w-1/3">Phone</p>
-      </div>
-      <div className="w-2/3">
-        <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-          {user.mobile}
-        </p>
-      </div>
-    </div>
-
-    {/* Address */}
-    <div className="flex justify-between items-center gap-2">
-    <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-      <p className=" p-2 font-medium w-1/3">Address</p>
-      </div>
-      <div className="w-2/3">
-      <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-         {user.address}
-        </p>
-      </div>
-    </div>
-
-    {/* Aadhar Number */}
-    <div className="flex justify-between items-center gap-2">
-      <div className="w-[40%] flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-blue-900 rounded-full">
-      <p className=" font-medium p-2 flex-">Aadhar Number</p>
-      </div>
-      <div className="w-2/3">
-      <p className="text-gray-800 bg-white p-2  shadow-[inset_4px_2px_8px_rgba(0,0,0,0.2)] rounded-full">
-         {user.adharcardnumber}
-        </p>
-      </div>
-    </div>
-  </div>
+        {/* Image Upload Button */}
+        <div className="mt-6 px-8 pb-8 text-center">
+          <button
+            className="bg-blue-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-600 font-semibold"
+            onClick={handleImageUpload}
+          >
+            Upload Image
+          </button>
         </div>
 
         {/* Actions */}
         <div className="mt-6 flex space-x-4 px-8 pb-8 justify-center">
-          <button className="bg-blue-500 text-white px-6 py-2 shadow-md hover:bg-blue-600 rounded-full font-semibold"  >
-            Update password
+          <button
+            className="bg-blue-500 text-white px-6 py-2 shadow-md hover:bg-blue-600 rounded-full font-semibold"
+            onClick={() => navigate("/profile/password")}
+          >
+            Update Password
           </button>
-          <button className="bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-600 font-semibold" onClick={logout}>
+          <button
+            className="bg-red-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-red-600 font-semibold"
+            onClick={logout}
+          >
             Log Out
           </button>
         </div>

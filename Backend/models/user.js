@@ -24,14 +24,18 @@ try {
 }
 }
 //Update password
-const updatePassword=async(id,newPass)=>{
-try {
-    const result=await pool.query("UPDATE users SET password=$1 WHERE id=$2 RETURING *",[newPass,id]);
-    return result.rows[0];
-} catch (error) {
-    throw error;
-}
-}
+const updatePassword = async (hashedPassword, userId) => {
+    try {
+        const result = await pool.query(
+            "UPDATE users SET password = $1 WHERE id = $2 RETURNING *",
+            [hashedPassword, userId]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error in updatePass model function:", error);
+        throw error;
+    }
+};
 
 //Find user by gmail
 const userByGmail=async(email)=>{
@@ -77,9 +81,20 @@ const countRole=async(role)=>{
         throw error;
     }
 }
+
+const updateVerificationStatus = async (userId) => {
+    try {
+      return  await pool.query('UPDATE users SET is_verified = TRUE WHERE id = $1', [userId]);
+    } catch (error) {                                    
+        console.error('Error updating verification status:', error);
+        throw error;
+    }
+};
+
   
 
 module.exports={
+    updateVerificationStatus,
     createUser,
     userrId,
     userByGmail,

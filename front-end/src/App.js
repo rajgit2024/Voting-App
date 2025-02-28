@@ -9,6 +9,7 @@ import { RoleContext } from "./Component/CandidatesUi/RoleContext";
 import ProtectedRoute from "./Component/ProtectedRoute";
 import Unauthorized from "./Component/Unauthorized"; // Dedicated Unauthorized component
 import Singup from "./Component/Singup";
+import LandingPage from "./Component/Landingpage";
 
 const App = () => {
   const { role, isAuthenticated } = useContext(RoleContext);
@@ -16,10 +17,19 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Landing page */}
+        <Route path="/" element={<LandingPage/>}/>
         {/* Public Routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Singup />} />
-
+        <Route path="/profile/password" element={
+          <ProtectedRoute  
+          component={UpdatePassword}
+          isAuthenticated={isAuthenticated}
+          role={role}
+          requiredRole='voter'
+          />
+        }/>
         {/* Protected Routes */}
         <Route
           path="/voter"
@@ -48,16 +58,6 @@ const App = () => {
           element={
             <ProtectedRoute
               component={UserProfile}
-              isAuthenticated={isAuthenticated}
-              role={role}
-            />
-          }
-        />
-        <Route
-          path="/profile/password"
-          element={
-            <ProtectedRoute
-              component={UpdatePassword}
               isAuthenticated={isAuthenticated}
               role={role}
             />
