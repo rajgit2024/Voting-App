@@ -5,6 +5,8 @@ import { RoleContext } from "./RoleContext";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
 const VoterDashboard = () => {
   const { role, isAuthenticated, logout } = useContext(RoleContext);
@@ -32,6 +34,11 @@ const VoterDashboard = () => {
       name: "Mamta Banerjee",
     },
   ];
+  
+  // Sort and get top 3 candidates by vote count in descending order
+   const topCandidates = [...candidates]
+  .sort((a, b) => b.vote_count - a.vote_count)
+  .slice(0, 3);
 
   useEffect(() => {
     if (!isAuthenticated || role !== "voter") {
@@ -196,7 +203,7 @@ const VoterDashboard = () => {
     </div>
   </div>
   {/* Content */}
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 flex flex-col lg:flex-row gap-6">
       <div className="lg:w-3/4 md:w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {candidates.map((candidate) => (
           <div
@@ -235,7 +242,60 @@ const VoterDashboard = () => {
           </div>
         ))}
       </div>
+       {/* Vertical Line */}
+    <div className="border-r-2 border-gray-300"></div>
+
+     {/* Top Candidates - 25% Width  and 70% height*/}
+    {/* Right-Side Section - Top Candidates & Pie Chart */}
+
+<div className="w-full lg:w-1/4 flex flex-col h-[100%]">
+  {/* Top Candidates - 65% Height */}
+  <div className="h-[60%] bg-white rounded-lg shadow-md p-4 overflow-auto">
+    <h2 className="text-2xl font-bold mb-4 text-center">Top Candidates</h2>
+    <div className="space-y-4">
+      {topCandidates.map((candidate) => (
+        <div
+          key={candidate.id}
+          className="bg-gray-100 rounded-lg shadow p-4 transform hover:scale-105 transition duration-300"
+        >
+          <h2 className="text-xl font-bold text-center">{candidate.name}</h2>
+          <h3 className="text-gray-600 text-center">
+            <span className="font-semibold">Party:</span> {candidate.party}
+          </h3>
+          <h3 className="text-gray-600 text-center">
+            <span className="font-semibold">Age:</span> {candidate.age}
+          </h3>
+        </div>
+      ))}
     </div>
+  </div>
+
+  {/* Pie Chart - 35% Height */}
+  <div className="min-h-[40%] flex flex-col items-center justify-center mt-4 bg-white rounded-lg shadow-md p-4">
+    <h2 className="text-2xl font-bold mb-4 text-center">Vote Distribution</h2>
+    <PieChart width={250} height={350}>
+      <Pie
+        data={candidates}
+        dataKey="vote_count"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        outerRadius={80}
+        fill="#8884d8"
+        label
+      >
+        {candidates.map((_, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend />
+    </PieChart>
+  </div>
+</div>
+
+    </div>
+    
     </div>
   );
 };
