@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require('morgan'); // Optional for logging
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
 
 // Initialize the Express app
 const app = express();
@@ -30,20 +31,13 @@ app.use(cors({
   credentials: true, // Allows credentials (cookies, Authorization header)
 }));
 
-// app.get('/session-check', (req, res) => {
-//   console.log('Session data:', req.session);
-//   if (req.session.userId) {
-//     return res.send('Session is active');
-//   }
-//   return res.send('No active session');
-// });
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Use Users and Candidates routes
 app.use("/api/user", userRoute);
 app.use("/api/candidates",candiRoute);
 app.use("/api/votes", voteRoutes);
-app.use('/api/user', userRoute);
-app.use('/uploads', express.static('uploads'));
+
 
 // Define a POST route to handle incoming data
 app.post('/data', (req, res) => {

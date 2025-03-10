@@ -10,6 +10,7 @@ import ProtectedRoute from "./Component/ProtectedRoute";
 import Unauthorized from "./Component/Unauthorized"; // Dedicated Unauthorized component
 import Singup from "./Component/Singup";
 import LandingPage from "./Component/Landingpage";
+import VerifyEmail from "./Component/VerifyEmail"
 
 const App = () => {
   const { role, isAuthenticated } = useContext(RoleContext);
@@ -22,14 +23,8 @@ const App = () => {
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Singup />} />
-        <Route path="/profile/password" element={
-          <ProtectedRoute  
-          component={UpdatePassword}
-          isAuthenticated={isAuthenticated}
-          role={role}
-          requiredRole='voter'
-          />
-        }/>
+        <Route path="/verify-email" element={<VerifyEmail/>} />
+        
         {/* Protected Routes */}
         <Route
           path="/voter"
@@ -42,6 +37,14 @@ const App = () => {
             />
           }
         />
+        <Route path="/profile/password" element={
+          <ProtectedRoute  
+          component={UpdatePassword}
+          isAuthenticated={isAuthenticated}
+          role={role}
+          requiredRole='voter'
+          />
+        }/>
         <Route
           path="/admin"
           element={

@@ -78,7 +78,7 @@ const loginUser=async(req,res)=>{
 }
 
 
-const userProfile = async (req, res) => {
+ const userProfile = async (req, res) => {
     try {
         const userId = req.user.id; // Extract user ID from JWT payload
 
@@ -88,7 +88,7 @@ const userProfile = async (req, res) => {
             return res.status(404).json({ message: 'User does not exist.' });
         }
 
-        const { name, age, email, mobile, address, adharcardnumber, role } = user;
+        const { name, age, email, mobile, address, adharcardnumber, role,profile_image} = user;
 
         return res.status(200).json({
             name,
@@ -98,11 +98,12 @@ const userProfile = async (req, res) => {
             address,
             adharcardnumber,
             role,
+            profile_image
         });
     } catch (error) {
-        console.error('Error in userProfile:', error.message);
-        return res.status(500).json({ message: 'Internal Server Error' });
-    }
+          console.error("Error fetching profile:", error);
+          res.status(500).json({ message: "Server error" });
+        }
 };
 
 
@@ -131,27 +132,42 @@ const updatePass=async(req,res)=>{
     }
 }
 
-// Image Upload Function
+// Upload Profile Image & Update Database
 const uploadProfileImage = async (req, res) => {
-  try {
-    const userId = req.user.id; // Assuming user is authenticated
-    const imageUrl = req.file.filename;
-
-    // Update user profile with the new image filename
-    await pool.query('UPDATE users SET profile_image = $1 WHERE id = $2', [imageUrl, userId]);
-
-    res.status(200).json({ message: 'Image uploaded successfully', imageUrl });
-  } catch (error) {
-    console.error('Error while uploading image:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-};
-
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+  
+      const filePath = `/uploads/${req.file.filename}`; // Store image path
+      const userId = req.user.id; // Get user ID from JWT middleware
+  
+      // Update the user's profile_image in PostgreSQL
+      const result = await pool.query(
+        "UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING profile_image",
+        [filePath, userId]
+      );
+  
+      if (result.rowCount === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.json({
+        message: "Profile image uploaded successfully!",
+        filePath,
+      });
+  
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+  
 
 module.exports={
     registerUser,
     loginUser,
     updatePass,
-    userProfile,
+    userProfile ,
     uploadProfileImage,
 };

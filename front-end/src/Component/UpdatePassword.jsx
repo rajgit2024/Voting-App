@@ -56,13 +56,13 @@ const UpdatePassword = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Update Password</h1>
+      <div className="w-full max-w-md overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 rounded-lg shadow-md">
+        <h1 className="text-2xl font-extrabold text-gray-800 mb-6 text-center">Update Password</h1>
         {errorMessage && <p className="text-red-600 text-sm mb-4">{errorMessage}</p>}
         {successMessage && <p className="text-green-600 text-sm mb-4">{successMessage}</p>}
         <form onSubmit={handlePasswordUpdate}>
           <div className="mb-4">
-            <label className="block text-gray-600 mb-2" htmlFor="currentPassword">
+            <label className="block text-white mb-2" htmlFor="currentPassword">
               Current Password
             </label>
             <input
@@ -76,7 +76,7 @@ const UpdatePassword = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-600 mb-2" htmlFor="newPassword">
+            <label className="block text-white mb-2" htmlFor="newPassword">
               New Password
             </label>
             <input
@@ -90,7 +90,7 @@ const UpdatePassword = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2" htmlFor="confirmPassword">
+            <label className="block text-white mb-2" htmlFor="confirmPassword">
               Confirm New Password
             </label>
             <input

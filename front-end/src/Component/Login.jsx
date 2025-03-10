@@ -64,7 +64,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container flex justify-center items-center flex-col w-[470px] m-auto bg-zinc-50 pb-[20px] mt-8 rounded-2xl shadow-lg">
+    <div className="container flex justify-center items-center flex-col w-[470px] m-auto bg-zinc-50 pb-[20px] mt-8 rounded-2xl shadow-lg overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
       <div className="header flex justify-center flex-col items-center mt-[30px] w-[100%]">
         <div className="text text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-blue-500">
           {action}

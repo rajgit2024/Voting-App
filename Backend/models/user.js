@@ -101,5 +101,5 @@ module.exports={
     comparePass,
     updatePassword,
     updateIsVoted,
-    countRole
+    countRole,
 }

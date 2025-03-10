@@ -75,8 +75,8 @@ const handleSubmit = async (e) => {
       });
 
       setTimeout(() => {
-       navigate("/")
-      },1000);
+        navigate("/verify-email");
+     }, 1000);     
     } 
   } catch (error) {
     console.error("Error details:", error);
@@ -101,7 +101,7 @@ const handleInput=(e)=>{
 }
   
   return (
-    <div className='container flex justify-center items-center flex-col w-[470px] m-auto bg-zinc-50 pb-[20px] mt-8 rounded-2xl' >
+    <div className='container flex justify-center items-center flex-col w-[470px] m-auto bg-zinc-50 pb-[20px] mt-8 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500' >
 
       {/* For header (sing up) */}
      <div className="header flex justify-center flex-col items-center mt-[30px] w-[100%]">

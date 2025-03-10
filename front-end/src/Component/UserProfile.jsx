@@ -21,34 +21,39 @@ const UserProfile = () => {
       navigate("/landing"); // Redirect to landing page
     }
   }, []);
-  
+
   // Fetch user details from the backend
   const fetchDetail = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const response = await axios.get("http://localhost:5000/api/user/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(response.data);
+        const response = await axios.get(
+          "http://localhost:5000/api/user/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUser(response.data); // Ensure updated data is set
       } catch (error) {
         console.error("Error while fetching profile:", error);
-        localStorage.removeItem("token"); // Clear token if invalid
+        localStorage.removeItem("token");
         navigate("/");
       } finally {
-        setLoading(false); // Stop loading after fetch attempt
+        setLoading(false);
       }
     } else {
-      setLoading(false); // No token, stop loading
+      setLoading(false);
       navigate("/");
     }
   };
 
   // Handle Image Selection
   const handleImageChange = (e) => {
-    setSelectedImage(e.target.files[0]);
+    if (e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
   };
 
   // Handle Image Upload
@@ -60,19 +65,23 @@ const UserProfile = () => {
 
     const token = localStorage.getItem("token");
     const formData = new FormData();
-    formData.append("profileImage", selectedImage);
+    formData.append("profile_image", selectedImage); // Must match field name in multer
 
     try {
-      await axios.post("http://localhost:5000/api/user/upload-profile-image", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/user/upload-profile-image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Profile image uploaded successfully!");
       setSelectedImage(null);
-      fetchDetail(); // Refresh user details
+      fetchDetail(); // Refresh profile after upload
     } catch (error) {
       console.error("Error while uploading image:", error);
       alert("Failed to upload image");
@@ -88,7 +97,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-center pt-2">
+    <div className="overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex justify-center items-center pt-2">
       <div className="bg-[#fffcc9] shadow-lg rounded-lg w-[90%] max-w-4xl">
         {/* Header */}
         <div className="w-full bg-gradient-to-r from-blue-300 to-blue-800 flex items-center justify-between px-4 h-12 rounded-t-xl">
@@ -103,7 +112,9 @@ const UserProfile = () => {
             <img
               src={
                 user.profile_image
-                  ? `http://localhost:5000/uploads/profile_images/${user.profile_image}?t=${new Date().getTime()}`
+                  ? `http://localhost:5000${
+                      user.profile_image
+                    }?t=${new Date().getTime()}`
                   : "https://via.placeholder.com/150"
               }
               alt="Profile"

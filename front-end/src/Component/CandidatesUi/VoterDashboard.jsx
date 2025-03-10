@@ -112,18 +112,18 @@ const VoterDashboard = () => {
 
   return (
 
-  <div className="min-h-screen bg-gray-100">
+  <div className="min-h-screen  overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
   {/* Navbar */}
-  <nav className=" bg-gradient-to-r from-blue-700 to-blue-900 text-white">
+  <nav className="fixed top-0 left-0 right-0 bg-opacity-30 backdrop-blur-md p-4 z-50 text-white shadow-lg">
     <div className="container mx-auto flex justify-between items-center p-4">
-      <h1 className="text-xl font-bold">Voter Dashboard</h1>
+      <h1 className="text-4xl font-extrabold drop-shadow-lg">Voter Dashboard</h1>
       {/* Desktop Menu */}
       <ul className="hidden md:flex space-x-4">
        
         <li>
           <button
             onClick={() => navigate("/profile")}
-            className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-200"
           >
             Profile
           </button>
@@ -131,7 +131,7 @@ const VoterDashboard = () => {
         <li>
           <button
             onClick={() => navigate("/disclaimer")}
-            className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-200"
           >
             Disclaimer
           </button>
@@ -157,11 +157,11 @@ const VoterDashboard = () => {
 
   {/* Right-Side Slider for Mobile */}
   <div
-    className={`fixed top-0 right-0 h-full bg-white shadow-lg transform ${
+    className={`fixed top-0 right-0 h-full bg-white bg-opacity-30 backdrop-blur-md  text-white shadow-lg transform ${
       isSliderOpen ? "translate-x-0" : "translate-x-full"
     } transition-transform duration-300 z-50 w-64`}
   >
-    <div className="p-4">
+    <div className="p-4 ">
       <button
         className="text-red-500 font-bold text-lg"
         onClick={() => setIsSliderOpen(false)} // Close slider
@@ -203,7 +203,7 @@ const VoterDashboard = () => {
     </div>
   </div>
   {/* Content */}
-    <div className="container mx-auto p-6 flex flex-col lg:flex-row gap-6">
+    <div className="container mx-auto pt-32 px-4 flex flex-col lg:flex-row gap-6">
       <div className="lg:w-3/4 md:w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {candidates.map((candidate) => (
           <div
