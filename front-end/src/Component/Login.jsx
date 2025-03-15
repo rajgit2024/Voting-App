@@ -13,13 +13,14 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/user/login", formData);
+      const response = await axios.post(`${API_BASE_URL}/api/user/login`, formData);
 
       if (response.status === 200) {
         const { token } = response.data;

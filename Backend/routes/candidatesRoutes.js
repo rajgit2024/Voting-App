@@ -2,7 +2,7 @@ const express = require("express");
 const candiController=require("../controllers/candidate");
 const {jwtAuthMiddleware,adminMiddleware,voterMiddleware}=require("../middlewares/roleMiddleware");
 const route=express.Router();
-
+const uploadCandidate = require("../config/multerConfig");;
 route.post("/create",jwtAuthMiddleware,adminMiddleware, candiController.createCandidate);
 route.put("/:id",jwtAuthMiddleware,adminMiddleware,candiController.updateCandidate);
 route.delete("/:id",jwtAuthMiddleware,adminMiddleware, candiController.deleteCand);

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RoleContext } from "./RoleContext";
 
 const AdminDashboard = () => {
-  const { role, isAuthenticated, logout } = useContext(RoleContext); // Access role and auth status
+  const { role, isAuthenticated, logout } = useContext(RoleContext);
   const [candidates, setCandidates] = useState([]);
   const [formData, setFormData] = useState({ name: "", party: "", age: "" });
   const [editingCandidate, setEditingCandidate] = useState(null);
@@ -13,19 +13,20 @@ const AdminDashboard = () => {
   useEffect(() => {
     console.log("Role:", role, "isAuthenticated:", isAuthenticated);
     if (!isAuthenticated || role !== "admin") {
-        navigate("/unauthorized"); // Redirect unauthorized users
+      navigate("/unauthorized");
     } else {
-        fetchCandidates(); // Fetch candidates if authorized
+      fetchCandidates();
     }
-}, [isAuthenticated, role, navigate]); // Removed `candidates`
-
-
+  }, [isAuthenticated, role, navigate]);
 
   const fetchCandidates = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/candidates/admin", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/candidates/admin`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       console.log("Fetched candidates:", response.data.data);
       setCandidates(response.data.data || []);
     } catch (error) {
@@ -41,7 +42,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/candidates/create",
+        `${process.env.REACT_APP_API_URL}/api/candidates/create`,
         formData,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -54,47 +55,47 @@ const AdminDashboard = () => {
     }
   };
 
-  
   const updateCandidate = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     try {
       if (!editingCandidate) {
         console.error("No candidate selected for editing!");
         return;
       }
-  
-      const { id } = editingCandidate; // Extract candidate ID
-      const { name, party, age } = formData; // Extract updated data
-  
+
+      const { id } = editingCandidate;
+      const { name, party, age } = formData;
+
       const token = localStorage.getItem("token");
       if (!token) throw new Error("User is not authenticated");
-  
+
       const response = await axios.put(
-        `http://localhost:5000/api/candidates/${id}`,
-        { name, party, age }, // Pass updated candidate data
+        `${process.env.REACT_APP_API_URL}/api/candidates/${id}`,
+        { name, party, age },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       if (response.status === 200) {
         alert("Candidate updated successfully!");
-        fetchCandidates(); // Refresh the candidate list
+        fetchCandidates();
         setEditingCandidate(null);
         setFormData({ name: "", party: "", age: "" });
       } else {
         alert("Failed to update candidate!");
       }
     } catch (error) {
-      console.error("Error updating candidate:", error.response?.data || error.message);
+      console.error(
+        "Error updating candidate:",
+        error.response?.data || error.message
+      );
       alert("Error updating candidate: " + (error.response?.data || error.message));
     }
   };
-  
-
 
   const deleteCandidate = async (id) => {
     try {
       console.log("Deleting candidate with ID:", id);
-      await axios.delete(`http://localhost:5000/api/candidates/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/candidates/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       fetchCandidates();

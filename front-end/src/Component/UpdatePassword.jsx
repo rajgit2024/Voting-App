@@ -7,7 +7,7 @@ const UpdatePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
 
@@ -25,7 +25,7 @@ const UpdatePassword = () => {
 
       // Send the request to the backend
       const response = await axios.put(
-        "http://localhost:5000/api/user/profile/password",
+        `${API_BASE_URL}/api/user/profile/password`,
         {
           userId,
           currentPass: currentPassword,

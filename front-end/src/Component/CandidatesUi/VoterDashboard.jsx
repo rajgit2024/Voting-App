@@ -15,7 +15,7 @@ const VoterDashboard = () => {
   const [messages, setMessages] = useState({ success: "", error: "" });
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const navigate = useNavigate();
-
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
   const images = [
     {
       src: "/images/narendramodi.jpg",
@@ -51,7 +51,7 @@ const VoterDashboard = () => {
   const fetchCandidates = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/candidates/voter", {
+      const response = await axios.get(`${API_BASE_URL}/api/candidates/voter`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -88,7 +88,7 @@ const VoterDashboard = () => {
       const userId = decodedToken.id;
 
       const response = await axios.post(
-        "http://localhost:5000/api/votes/vote",
+        `${API_BASE_URL}/api/votes/vote`,
         { userId, candidateId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -207,39 +207,49 @@ const VoterDashboard = () => {
       <div className="lg:w-3/4 md:w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {candidates.map((candidate) => (
           <div
-            key={candidate.id}
-            className="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition duration-300 items-center"
-          >
-            <div className="flex justify-center items-center flex-col">
-              <img
-                src={candidate.src}
-                alt={candidate.name}
-                className="w-[200px] h-[200px] object-cover rounded-full mb-4"
-              />
-              <h2 className="text-lg font-bold mb-2">{candidate.name}</h2>
-            </div>
-            <h3 className="text-gray-600 mb-2 text-center">
-              <span className="font-semibold">Party:</span> {candidate.party}
-            </h3>
-            <h3 className="text-gray-600 mb-2 text-center">
-              <span className="font-semibold">Age:</span> {candidate.age}
-            </h3>
-            <h3 className="text-gray-600 mb-2 text-center">
-              <span className="font-semibold">Votes:</span> {candidate.vote_count}
-            </h3>
-          <button
-          onClick={() => handleVote(candidate.id)}
-          disabled={hasVoted}
-          className={`w-full py-2 px-4 rounded text-white ${
-            hasVoted
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
+          key={candidate.id}
+          className="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition duration-300 items-center"
         >
-        {hasVoted ? "Voted" : "Vote"}
-         </button>
-
+          <div className="flex justify-center items-center flex-col">
+            <img
+              src={candidate.src}
+              alt={candidate.name}
+              className="w-[200px] h-[200px] object-cover rounded-full mb-4"
+            />
+            <h2 className="text-lg font-bold mb-2">{candidate.name}</h2>
           </div>
+        
+          {/* Stylish Separation for Party, Age, and Votes */}
+          <div className="flex justify-around items-center border border-gray-300 rounded-md p-3 mt-4 bg-gray-100">
+            <div className="text-center px-4">
+              <h3 className="text-gray-600 font-semibold">Party</h3>
+              <p className="text-black">{candidate.party}</p>
+            </div>
+            <div className="border-l border-gray-400 h-full"></div>
+            <div className="text-center px-4">
+              <h3 className="text-gray-600 font-semibold">Age</h3>
+              <p className="text-black">{candidate.age}</p>
+            </div>
+            <div className="border-l border-gray-400 h-full"></div>
+            <div className="text-center px-4">
+              <h3 className="text-gray-600 font-semibold">Votes</h3>
+              <p className="text-black">{candidate.vote_count}</p>
+            </div>
+          </div>
+        
+          <button
+            onClick={() => handleVote(candidate.id)}
+            disabled={hasVoted}
+            className={`w-full py-2 px-4 rounded text-white mt-4 ${
+              hasVoted
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+          >
+            {hasVoted ? "Voted" : "Vote"}
+          </button>
+        </div>
+        
         ))}
       </div>
        {/* Vertical Line */}

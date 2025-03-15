@@ -14,6 +14,7 @@ route.post(
     "/upload-profile-image",
     jwtAuthMiddleware,
     upload.single("profile_image"),
+    voterMiddleware,
     userController.uploadProfileImage
   );
 

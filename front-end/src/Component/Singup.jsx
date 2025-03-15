@@ -24,6 +24,7 @@ const [formData,setFormData]=useState({
     password: "",
     role:"voter" //Default role
 })
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -59,7 +60,7 @@ const handleSubmit = async (e) => {
   }
   // Send Data to Backend
   try {
-   const response=await axios.post("http://localhost:5000/api/user/register",formData);
+   const response=await axios.post(`${API_BASE_URL}/api/user/register`,formData);
   if (response.status===201) {
       setMessage({text:"Successfully register!",type:"success"});
       //Clear formData after register a user
