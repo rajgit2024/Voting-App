@@ -6,7 +6,10 @@ const pool=new Pool({
    database:process.env.PG_DATABASE,
    password:process.env.PG_PASSWORD,
    port:process.env.PG_PORT,
-   host:process.env.PG_HOST
+   host:process.env.PG_HOST,
+   ssl: {
+      rejectUnauthorized: false, // Important for Supabase and Render
+    },
 })
 
 module.exports=pool;
