@@ -34,8 +34,8 @@ const VoterDashboard = () => {
       name: "Mamta Banerjee",
     },
     {
-      src:"/images/nitish_kumar.jpg",
-      name:"Nitish Kumar"
+      src: "/images/nitish_kumar.jpg",
+      name: "Nitish Kumar"
     }
   ];
   

@@ -11,6 +11,7 @@ import Unauthorized from "./Component/Unauthorized"; // Dedicated Unauthorized c
 import Singup from "./Component/Singup";
 import LandingPage from "./Component/Landingpage";
 import VerifyEmail from "./Component/VerifyEmail"
+import Disclaimer from "./Component/Disclaimer";
 
 const App = () => {
   const { role, isAuthenticated } = useContext(RoleContext);
@@ -65,6 +66,15 @@ const App = () => {
               role={role}
             />
           }
+        />
+        <Route path="/disclaimer" 
+        element={
+          <ProtectedRoute
+          component={Disclaimer}
+          role={role}
+          isAuthenticated={isAuthenticated}
+          />
+        }
         />
 
         {/* Unauthorized Access Route */}
