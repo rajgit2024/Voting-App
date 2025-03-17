@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // Ensure the uploads folder exists (important for cloud deployments)
 const uploadDir = path.join(__dirname, "../uploads");
