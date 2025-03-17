@@ -64,7 +64,7 @@ const UserProfile = () => {
 
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/api/user/upload-profile-image`,
+        `https://voting-app-11.onrender.com/api/user/upload-profile-image`,
         formData,
         {
           headers: {
