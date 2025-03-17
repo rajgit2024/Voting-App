@@ -1,16 +1,10 @@
-const {Pool}=require("pg");
-require('dotenv').config(); 
+const { Pool } = require("pg");
 
-const pool=new Pool({
-   user:process.env.PG_USER,
-   database:process.env.PG_DATABASE,
-   password:process.env.PG_PASSWORD,
-   port:process.env.PG_PORT,
-   host:process.env.PG_HOST,
-   ssl: {
-      rejectUnauthorized: false, // Important for Supabase and Render
-    },
-     connectionString: `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}?hostaddr=0.0.0.0`
-})
+const pool = new Pool({
+  connectionString: "postgresql://neondb_owner:npg_Hu2dfboj9vZC@ep-white-sea-a5fifpe6-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require",
+  ssl: {
+    rejectUnauthorized: false, // Required for Neon connections
+  },
+});
 
-module.exports=pool;
+module.exports = pool;
