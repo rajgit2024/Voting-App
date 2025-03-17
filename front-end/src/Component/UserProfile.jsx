@@ -105,7 +105,7 @@ const UserProfile = () => {
             <img
               src={
                 user.profile_image
-                  ? `${API_BASE_URL}${
+                  ? `https://voting-app-11.onrender.com${
                       user.profile_image
                     }?t=${new Date().getTime()}`
                   : "https://via.placeholder.com/150"
