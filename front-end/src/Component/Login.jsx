@@ -124,9 +124,6 @@ const Login = () => {
           <h3 className="font-[70px]">Don't have account?</h3>
           <a className="text-blue-800" href="/register">Click here</a>
         </h2>
-        <h2 className="font-[50px] text-blue-800">
-          <a href="/profile/password">Forgot password?</a>
-        </h2>
         </div>
         </form>
     </div>

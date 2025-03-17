@@ -9,10 +9,10 @@ const morgan = require('morgan'); // Optional for logging
 const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
+require("dotenv").config();
 
 // Initialize the Express app
 const app = express();
-require("dotenv").config();
 
 // Middleware for logging requests
 app.use(morgan('dev')); // Logs requests to the console
@@ -30,7 +30,6 @@ app.use(cors({
   origin: process.env.REACT_APP_API_URL, // Your frontend URL
   credentials: true, // Allows credentials (cookies, Authorization header)
 }));
-
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Use Users and Candidates routes

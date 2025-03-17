@@ -59,7 +59,7 @@ const UpdatePassword = () => {
       <div className="w-full max-w-md overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 rounded-lg shadow-md">
         <h1 className="text-2xl font-extrabold text-gray-800 mb-6 text-center">Update Password</h1>
         {errorMessage && <p className="text-red-600 text-sm mb-4">{errorMessage}</p>}
-        {successMessage && <p className="text-green-600 text-sm mb-4">{successMessage}</p>}
+        {successMessage && <p className="text-white text-sm mb-4">{successMessage}</p>}
         <form onSubmit={handlePasswordUpdate}>
           <div className="mb-4">
             <label className="block text-white mb-2" htmlFor="currentPassword">
