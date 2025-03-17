@@ -33,6 +33,10 @@ const VoterDashboard = () => {
       src: "/images/mamta.jpg",
       name: "Mamta Banerjee",
     },
+    {
+      src:"/images/nitish_kumar.jpg",
+      name:"Nitish Kumar"
+    }
   ];
   
   // Sort and get top 3 candidates by vote count in descending order
