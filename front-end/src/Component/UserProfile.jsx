@@ -11,7 +11,6 @@ const UserProfile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { logout } = useContext(RoleContext);
   const navigate = useNavigate();
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
