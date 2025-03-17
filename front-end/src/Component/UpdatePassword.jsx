@@ -25,7 +25,7 @@ const UpdatePassword = () => {
 
       // Send the request to the backend
       const response = await axios.put(
-        `${API_BASE_URL}/api/user/profile/password`,
+        `https://voting-app-11.onrender.com/api/user/profile/password`,
         {
           userId,
           currentPass: currentPassword,

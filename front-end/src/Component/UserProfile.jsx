@@ -27,7 +27,7 @@ const UserProfile = () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/user/profile`, {
+        const response = await axios.get(`https://voting-app-11.onrender.com/api/user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

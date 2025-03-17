@@ -15,7 +15,7 @@ const VoterDashboard = () => {
   const [messages, setMessages] = useState({ success: "", error: "" });
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const navigate = useNavigate();
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
+
   const images = [
     {
       src: "/images/narendramodi.jpg",
@@ -51,7 +51,7 @@ const VoterDashboard = () => {
   const fetchCandidates = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${API_BASE_URL}/api/candidates/voter`, {
+      const response = await axios.get(`https://voting-app-11.onrender.com/api/candidates/voter`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -88,7 +88,7 @@ const VoterDashboard = () => {
       const userId = decodedToken.id;
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/votes/vote`,
+        `https://voting-app-11.onrender.com/api/votes/vote`,
         { userId, candidateId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

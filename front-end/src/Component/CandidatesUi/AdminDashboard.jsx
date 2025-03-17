@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   const fetchCandidates = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/candidates/admin`,
+        `https://voting-app-11.onrender.com/api/candidates/admin`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/candidates/create`,
+        `https://voting-app-11.onrender.com/api/candidates/create`,
         formData,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
       if (!token) throw new Error("User is not authenticated");
 
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/candidates/${id}`,
+        `https://voting-app-11.onrender.com/api/candidates/${id}`,
         { name, party, age },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
   const deleteCandidate = async (id) => {
     try {
       console.log("Deleting candidate with ID:", id);
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/candidates/${id}`, {
+      await axios.delete(`https://voting-app-11.onrender.com/api/candidates/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       fetchCandidates();
