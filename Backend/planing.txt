@@ -57,3 +57,10 @@ voter- sirf ek baar vote deskta hai kissi ek hee candidates ko
 991599870534-ruhkf1r7rhglgccss4lho5ul6mvj0hm1.apps.googleusercontent.com
 
 https://voting-app-11.onrender.com
+
+PORT=5000
+NODE_ENV="production"
+SESS_SECR="raju_don"
+JWT_KEY="rajuBhai"
+USER_EMAIL="rajd879612@gmail.com"
+USER_PASS="macc osgn eawt laaa"
