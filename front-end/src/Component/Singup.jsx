@@ -8,6 +8,7 @@ import { GiAges } from "react-icons/gi";
 import { MdEmail } from "react-icons/md";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API from '../axios';
 
 const Singup = () => {
 
@@ -59,7 +60,7 @@ const handleSubmit = async (e) => {
   }
   // Send Data to Backend
   try {
-   const response=await axios.post(`https://voting-app-11.onrender.com/api/user/register`,formData);
+   const response=await API.post(`/user/register`,formData);
   if (response.status===201) {
       setMessage({text:"Successfully register!",type:"success"});
       //Clear formData after register a user

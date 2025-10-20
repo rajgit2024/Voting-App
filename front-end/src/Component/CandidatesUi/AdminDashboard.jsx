@@ -5,6 +5,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { RoleContext } from "./RoleContext"
 import { LogOut, Plus, Edit2, Trash2, Users, AlertCircle, Save, X } from "lucide-react"
+import API from "../../axios"
 
 const AdminDashboard = () => {
   const { role, isAuthenticated, logout } = useContext(RoleContext)
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await axios.get(`https://voting-app-11.onrender.com/api/candidates/admin`, {
+      const response = await axios.get(`/candidates/admin`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       console.log("Fetched candidates:", response.data.data)
@@ -48,7 +49,7 @@ const AdminDashboard = () => {
   const createCandidate = async (e) => {
     e.preventDefault()
     try {
-      await axios.post(`https://voting-app-11.onrender.com/api/candidates/create`, formData, {
+      await API.post(`/candidates/create`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       fetchCandidates()
@@ -73,7 +74,7 @@ const AdminDashboard = () => {
       if (!token) throw new Error("User is not authenticated")
 
       const response = await axios.put(
-        `https://voting-app-11.onrender.com/api/candidates/${id}`,
+        `/candidates/${id}`,
         { name, party, age },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -96,7 +97,7 @@ const AdminDashboard = () => {
     if (window.confirm("Are you sure you want to delete this candidate?")) {
       try {
         console.log("Deleting candidate with ID:", id)
-        await axios.delete(`https://voting-app-11.onrender.com/api/candidates/${id}`, {
+        await API.delete(`/candidates/${id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
         fetchCandidates()

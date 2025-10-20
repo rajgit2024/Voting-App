@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import jwtDecode from "jwt-decode";
+import API from "../axios";
 const UpdatePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -24,8 +25,8 @@ const UpdatePassword = () => {
       const userId = decodedToken.id;
 
       // Send the request to the backend
-      const response = await axios.put(
-        `https://voting-app-11.onrender.com/api/user/profile/password`,
+      const response = await API.put(
+        `/user/profile/password`,
         {
           userId,
           currentPass: currentPassword,

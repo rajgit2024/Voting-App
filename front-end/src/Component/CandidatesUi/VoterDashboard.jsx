@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import API from "../../axios";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
 const VoterDashboard = () => {
@@ -55,7 +56,7 @@ const VoterDashboard = () => {
   const fetchCandidates = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`https://voting-app-11.onrender.com/api/candidates/voter`, {
+      const response = await API.get(`/candidates/voter`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -91,8 +92,8 @@ const VoterDashboard = () => {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
 
-      const response = await axios.post(
-        `https://voting-app-11.onrender.com/api/votes/vote`,
+      const response = await API.post(
+        `/votes/vote`,
         { userId, candidateId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

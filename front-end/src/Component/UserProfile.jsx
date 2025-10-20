@@ -4,6 +4,7 @@ import { TbArrowBackUp } from "react-icons/tb";
 import axios from "axios";
 import { RoleContext } from "./CandidatesUi/RoleContext";
 import { useNavigate } from "react-router-dom";
+import API from "../axios";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -26,7 +27,7 @@ const UserProfile = () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const response = await axios.get(`https://voting-app-11.onrender.com/api/user/profile`, {
+        const response = await API.get(`/user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,8 +63,8 @@ const UserProfile = () => {
     formData.append("profile_image", selectedImage);
 
     try {
-      const response = await axios.post(
-        `https://voting-app-11.onrender.com/api/user/upload-profile-image`,
+      const response = await API.post(
+        `/user/upload-profile-image`,
         formData,
         {
           headers: {

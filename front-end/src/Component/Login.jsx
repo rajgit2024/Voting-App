@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { MdPassword, MdEmail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import JwtDecode from "jwt-decode";
+import API from "../axios";
 
 const Login = () => {
   const [action] = useState("Login");
@@ -19,7 +20,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://voting-app-11.onrender.com/api/user/login", formData);
+      const response = await API.post("/user/login", formData);
 
       if (response.status === 200) {
         const { token } = response.data;
