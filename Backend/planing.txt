@@ -57,4 +57,3 @@ voter- sirf ek baar vote deskta hai kissi ek hee candidates ko
 
 
 
-curl https://43.204.218.70:5000/api/user/login

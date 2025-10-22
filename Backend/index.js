@@ -27,7 +27,8 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: process.env.REACT_APP_API_URL, // Your frontend URL
+  origin: process.env.REACT_APP_API_URL, // frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true, // Allows credentials (cookies, Authorization header)
 }));
 
@@ -36,6 +37,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/user", userRoute);
 app.use("/api/candidates",candiRoute);
 app.use("/api/votes", voteRoutes);
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend working fine!" });
+});
 
 
 // Define a POST route to handle incoming data

@@ -4,6 +4,6 @@ const API = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-console.log("API BASE URL:", process.env.REACT_APP_BASE_URL);
+console.log("Loaded BASE URL:", process.env.REACT_APP_BASE_URL);
 
 export default API;
